@@ -18,8 +18,8 @@ public class JacksonConfiguration {
         DateTimeFormatterFactory formatterFactory = new DateTimeFormatterFactory();
         formatterFactory.setIso(DateTimeFormat.ISO.DATE);
         module.addSerializer(DateTime.class, new DateTimeSerializer(
-                new JacksonJodaFormat(formatterFactory.createDateTimeFormatter()
-                        .withZoneUTC())));
+            new JacksonJodaFormat(formatterFactory.createDateTimeFormatter()
+                .withZoneUTC())));
         return module;
     }
 }

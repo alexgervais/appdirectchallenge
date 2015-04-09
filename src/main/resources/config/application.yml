@@ -14,16 +14,6 @@ async:
     queueCapacity: 10000
 
 spring:
-    mail:
-        host: localhost
-        port: 25
-        user:
-        password:
-        protocol: smtp
-        tls: false
-        auth: false
-        from: appdirectchallenge@localhost
-
     messageSource:
         cacheSeconds: 1
 
@@ -33,11 +23,3 @@ authentication:
         secret: mySecretOAuthSecret
         # Token is valid 30 minutes
         tokenValidityInSeconds: 1800
-
-swagger:
-    title: appdirectchallenge API
-    description: appdirectchallenge applications and beyond!
-    termsOfServiceUrl: http://jhipster.github.io/
-    contact:
-    license: Apache 2.0
-    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html

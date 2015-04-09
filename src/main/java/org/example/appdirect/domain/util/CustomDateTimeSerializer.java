@@ -1,15 +1,14 @@
 package org.example.appdirect.domain.util;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
 
 /**
  * Custom Jackson serializer for displaying Joda DateTime objects.
@@ -17,12 +16,12 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 public class CustomDateTimeSerializer extends JsonSerializer<DateTime> {
 
     private static DateTimeFormatter formatter = DateTimeFormat
-            .forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        .forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     @Override
     public void serialize(DateTime value, JsonGenerator generator,
                           SerializerProvider serializerProvider)
-            throws IOException {
+        throws IOException {
         generator.writeString(formatter.print(value.toDateTime(DateTimeZone.UTC)));
     }
 

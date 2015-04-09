@@ -78,13 +78,13 @@ public class UserDTO {
     @Override
     public String toString() {
         return "UserDTO{" +
-        "login='" + login + '\'' +
-        ", password='" + password + '\'' +
-        ", firstName='" + firstName + '\'' +
-        ", lastName='" + lastName + '\'' +
-        ", email='" + email + '\'' +
-        ", langKey='" + langKey + '\'' +
-        ", roles=" + roles +
-        '}';
+            "login='" + login + '\'' +
+            ", password='" + password + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", email='" + email + '\'' +
+            ", langKey='" + langKey + '\'' +
+            ", roles=" + roles +
+            '}';
     }
 }
