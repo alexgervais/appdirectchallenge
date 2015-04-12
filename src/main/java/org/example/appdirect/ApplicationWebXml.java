@@ -15,6 +15,7 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+
         return application.profiles(addDefaultProfile())
             .showBanner(false)
             .sources(Application.class);
@@ -28,6 +29,7 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
      * </p>
      */
     private String addDefaultProfile() {
+
         String profile = System.getProperty("spring.profiles.active");
         if (profile != null) {
             log.info("Running with Spring profile(s) : {}", profile);

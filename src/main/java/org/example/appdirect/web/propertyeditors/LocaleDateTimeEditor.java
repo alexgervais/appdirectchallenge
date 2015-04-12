@@ -30,6 +30,7 @@ public class LocaleDateTimeEditor extends PropertyEditorSupport {
      * @param allowEmpty if empty strings should be allowed
      */
     public LocaleDateTimeEditor(String dateFormat, boolean allowEmpty) {
+
         this.formatter = DateTimeFormat.forPattern(dateFormat);
         this.allowEmpty = allowEmpty;
     }
@@ -40,6 +41,7 @@ public class LocaleDateTimeEditor extends PropertyEditorSupport {
      * @return DateTime formatted string
      */
     public String getAsText() {
+
         Date value = (Date) getValue();
         return value != null ? new LocalDateTime(value).toString(formatter) : "";
     }
@@ -51,6 +53,7 @@ public class LocaleDateTimeEditor extends PropertyEditorSupport {
      * @throws IllegalArgumentException
      */
     public void setAsText(String text) throws IllegalArgumentException {
+
         if (allowEmpty && !StringUtils.hasText(text)) {
             // Treat empty String as null value.
             setValue(null);

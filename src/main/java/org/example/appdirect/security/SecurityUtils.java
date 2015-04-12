@@ -15,12 +15,14 @@ import java.util.Collection;
 public final class SecurityUtils {
 
     private SecurityUtils() {
+
     }
 
     /**
      * Get the login of the current user.
      */
     public static String getCurrentLogin() {
+
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         UserDetails springSecurityUser = null;
@@ -42,6 +44,7 @@ public final class SecurityUtils {
      * @return true if the user is authenticated, false otherwise
      */
     public static boolean isAuthenticated() {
+
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Collection<? extends GrantedAuthority> authorities = securityContext.getAuthentication().getAuthorities();
         if (authorities != null) {
@@ -59,6 +62,7 @@ public final class SecurityUtils {
      * If the current user has a specific security role.
      */
     public static boolean isUserInRole(String role) {
+
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         if (authentication != null) {

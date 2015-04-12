@@ -43,6 +43,7 @@ public class CacheConfiguration {
 
     @PreDestroy
     public void destroy() {
+
         log.info("Remove Cache Manager metrics");
         SortedSet<String> names = metricRegistry.getNames();
         for (String name : names) {
@@ -54,6 +55,7 @@ public class CacheConfiguration {
 
     @Bean
     public CacheManager cacheManager() {
+
         log.debug("Starting Ehcache");
         cacheManager = net.sf.ehcache.CacheManager.create();
         cacheManager.getConfiguration().setMaxBytesLocalHeap(env.getProperty("cache.ehcache.maxBytesLocalHeap", String.class, "16M"));

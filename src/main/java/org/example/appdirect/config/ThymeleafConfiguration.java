@@ -18,6 +18,7 @@ public class ThymeleafConfiguration {
     @Bean
     @Description("Thymeleaf template resolver serving HTML 5 emails")
     public ClassLoaderTemplateResolver emailTemplateResolver() {
+
         ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
         emailTemplateResolver.setPrefix("mails/");
         emailTemplateResolver.setSuffix(".html");
@@ -30,6 +31,7 @@ public class ThymeleafConfiguration {
     @Bean
     @Description("Spring mail message resolver")
     public MessageSource emailMessageSource() {
+
         log.info("loading non-reloadable mail messages resources");
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/mails/messages/messages");

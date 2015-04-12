@@ -6,6 +6,8 @@ import org.example.appdirect.domain.User;
 import org.example.appdirect.repository.UserRepository;
 import org.example.appdirect.security.AuthoritiesConstants;
 import org.example.appdirect.service.UserService;
+import org.example.appdirect.web.mapper.AccountMapper;
+import org.example.appdirect.web.rest.dto.Account;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,10 +44,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AccountResourceTest {
 
     @Inject
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    private AccountMapper accountMapper;
 
     @Mock
     private UserService mockUserService;
@@ -56,15 +58,16 @@ public class AccountResourceTest {
 
     @Before
     public void setup() {
+
         MockitoAnnotations.initMocks(this);
 
         AccountResource accountResource = new AccountResource();
-        ReflectionTestUtils.setField(accountResource, "userRepository", userRepository);
         ReflectionTestUtils.setField(accountResource, "userService", userService);
+        ReflectionTestUtils.setField(accountResource, "accountMapper", accountMapper);
 
         AccountResource accountUserMockResource = new AccountResource();
-        ReflectionTestUtils.setField(accountUserMockResource, "userRepository", userRepository);
         ReflectionTestUtils.setField(accountUserMockResource, "userService", mockUserService);
+        ReflectionTestUtils.setField(accountUserMockResource, "accountMapper", accountMapper);
 
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource).build();
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource).build();
@@ -72,6 +75,7 @@ public class AccountResourceTest {
 
     @Test
     public void testNonAuthenticatedUser() throws Exception {
+
         restUserMockMvc.perform(get("/api/authenticate")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -80,9 +84,11 @@ public class AccountResourceTest {
 
     @Test
     public void testAuthenticatedUser() throws Exception {
+
         restUserMockMvc.perform(get("/api/authenticate")
             .with(new RequestPostProcessor() {
                 public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+
                     request.setRemoteUser("test");
                     return request;
                 }
@@ -94,6 +100,7 @@ public class AccountResourceTest {
 
     @Test
     public void testGetExistingAccount() throws Exception {
+
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.ADMIN);
@@ -120,6 +127,7 @@ public class AccountResourceTest {
 
     @Test
     public void testGetUnknownAccount() throws Exception {
+
         when(mockUserService.getUserWithAuthorities()).thenReturn(null);
 
         restUserMockMvc.perform(get("/api/account")

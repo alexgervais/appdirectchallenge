@@ -20,11 +20,13 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter implements Envi
 
     @Override
     public void setEnvironment(Environment environment) {
+
         this.propertyResolver = new RelaxedPropertyResolver(environment, "spring.messageSource.");
     }
 
     @Bean(name = "localeResolver")
     public LocaleResolver localeResolver() {
+
         AngularCookieLocaleResolver cookieLocaleResolver = new AngularCookieLocaleResolver();
         cookieLocaleResolver.setCookieName("NG_TRANSLATE_LANG_KEY");
         return cookieLocaleResolver;
@@ -32,6 +34,7 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter implements Envi
 
     @Bean
     public MessageSource messageSource() {
+
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/i18n/messages");
         messageSource.setDefaultEncoding("UTF-8");
@@ -41,6 +44,7 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter implements Envi
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("language");
         registry.addInterceptor(localeChangeInterceptor);

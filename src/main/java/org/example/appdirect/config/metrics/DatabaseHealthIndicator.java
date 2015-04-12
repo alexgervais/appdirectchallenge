@@ -39,12 +39,14 @@ public class DatabaseHealthIndicator extends AbstractHealthIndicator {
     private String query = null;
 
     public DatabaseHealthIndicator(DataSource dataSource) {
+
         this.dataSource = dataSource;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     protected void doHealthCheck(Health.Builder builder) throws Exception {
+
         String product = getProduct();
         builder.up().withDetail("database", product);
         String query = detectQuery(product);
@@ -59,6 +61,7 @@ public class DatabaseHealthIndicator extends AbstractHealthIndicator {
     }
 
     private String getProduct() {
+
         return this.jdbcTemplate.execute(new ConnectionCallback<String>() {
             @Override
             public String doInConnection(Connection connection) throws SQLException,
@@ -70,6 +73,7 @@ public class DatabaseHealthIndicator extends AbstractHealthIndicator {
     }
 
     protected String detectQuery(String product) {
+
         String query = this.query;
         if (!StringUtils.hasText(query)) {
             query = queries.get(product);
@@ -81,6 +85,7 @@ public class DatabaseHealthIndicator extends AbstractHealthIndicator {
     }
 
     public void setQuery(String query) {
+
         this.query = query;
     }
 }

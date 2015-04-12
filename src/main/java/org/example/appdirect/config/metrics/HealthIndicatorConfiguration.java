@@ -15,6 +15,7 @@ public class HealthIndicatorConfiguration {
 
     @Bean
     public HealthIndicator dbHealthIndicator() {
+
         return new DatabaseHealthIndicator(dataSource);
     }
 }

@@ -20,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SecurityUtilsTest {
 
     @Test
-    public void testGetCurrentLogin() {
+    public void getCurrentLogin() {
+
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
@@ -29,7 +30,8 @@ public class SecurityUtilsTest {
     }
 
     @Test
-    public void testIsAuthenticated() {
+    public void isAuthenticated() {
+
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
@@ -38,7 +40,8 @@ public class SecurityUtilsTest {
     }
 
     @Test
-    public void testAnonymousIsNotAuthenticated() {
+    public void anonymousIsNotAuthenticated() {
+
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ANONYMOUS));

@@ -35,6 +35,7 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<User> getAll() {
+
         log.debug("REST request to get all Users");
         return userRepository.findAll();
     }
@@ -47,6 +48,7 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public User getUser(@PathVariable String login, HttpServletResponse response) {
+
         log.debug("REST request to get User : {}", login);
         User user = userRepository.findOneByLogin(login);
         if (user == null) {

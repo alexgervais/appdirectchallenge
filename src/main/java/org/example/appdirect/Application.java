@@ -36,6 +36,7 @@ public class Application {
      */
     @PostConstruct
     public void initApplication() throws IOException {
+
         if (env.getActiveProfiles().length == 0) {
             log.warn("No Spring profile configured, running with default configuration");
         } else {
@@ -47,6 +48,7 @@ public class Application {
      * Main method, used to run the application.
      */
     public static void main(String[] args) throws UnknownHostException {
+
         SpringApplication app = new SpringApplication(Application.class);
         app.setShowBanner(false);
 
@@ -70,6 +72,7 @@ public class Application {
      * Set a default profile if it has not been set
      */
     private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
+
         if (!source.containsProperty("spring.profiles.active")) {
             app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
         }
@@ -79,6 +82,7 @@ public class Application {
      * Set the liquibases.scan.packages to avoid an exception from ServiceLocator.
      */
     private static void addLiquibaseScanPackages() {
+
         System.setProperty("liquibase.scan.packages", Joiner.on(",").join(
             "liquibase.change", "liquibase.database", "liquibase.parser",
             "liquibase.precondition", "liquibase.datatype",

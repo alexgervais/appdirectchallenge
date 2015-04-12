@@ -6,6 +6,7 @@ package org.example.appdirect.security;
 public final class AuthoritiesConstants {
 
     private AuthoritiesConstants() {
+
     }
 
     public static final String ADMIN = "ROLE_ADMIN";

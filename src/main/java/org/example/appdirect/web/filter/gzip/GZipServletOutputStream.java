@@ -11,37 +11,44 @@ class GZipServletOutputStream extends ServletOutputStream {
 
     public GZipServletOutputStream(OutputStream output)
         throws IOException {
+
         super();
         this.stream = output;
     }
 
     @Override
     public void close() throws IOException {
+
         this.stream.close();
     }
 
     @Override
     public void flush() throws IOException {
+
         this.stream.flush();
     }
 
     @Override
     public void write(byte b[]) throws IOException {
+
         this.stream.write(b);
     }
 
     @Override
     public void write(byte b[], int off, int len) throws IOException {
+
         this.stream.write(b, off, len);
     }
 
     @Override
     public void write(int b) throws IOException {
+
         this.stream.write(b);
     }
 
     @Override
     public boolean isReady() {
+
         return true;
     }
 

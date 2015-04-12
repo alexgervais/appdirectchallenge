@@ -16,6 +16,7 @@ class GZipServletResponseWrapper extends HttpServletResponseWrapper {
 
     public GZipServletResponseWrapper(HttpServletResponse response, GZIPOutputStream gzout)
         throws IOException {
+
         super(response);
         gzipOutputStream = new GZipServletOutputStream(gzout);
     }
@@ -62,6 +63,7 @@ class GZipServletResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
+
         if (this.printWriter != null) {
             throw new IllegalStateException(
                 "PrintWriter obtained already - cannot get OutputStream");
@@ -72,6 +74,7 @@ class GZipServletResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public PrintWriter getWriter() throws IOException {
+
         if (this.printWriter == null) {
             this.gzipOutputStream = new GZipServletOutputStream(
                 getResponse().getOutputStream());
@@ -94,6 +97,7 @@ class GZipServletResponseWrapper extends HttpServletResponseWrapper {
      * Flushes all the streams for this response.
      */
     public void flush() throws IOException {
+
         if (printWriter != null) {
             printWriter.flush();
         }
@@ -109,6 +113,7 @@ class GZipServletResponseWrapper extends HttpServletResponseWrapper {
      * @param disableFlushBuffer true if the wrapped reponse's buffer flushing should be disabled
      */
     public void setDisableFlushBuffer(boolean disableFlushBuffer) {
+
         this.disableFlushBuffer = disableFlushBuffer;
     }
 }

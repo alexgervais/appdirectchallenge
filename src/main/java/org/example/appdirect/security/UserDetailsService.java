@@ -20,7 +20,8 @@ import java.util.Collection;
  * Authenticate a user from the database.
  */
 @Component("userDetailsService")
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class
+    UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
 
@@ -30,6 +31,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {
+
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase();
         User userFromDatabase = userRepository.findOneByLogin(lowercaseLogin);

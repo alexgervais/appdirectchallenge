@@ -1,7 +1,7 @@
 {
     "main": {
         "title": "Welcome,",
-        "subtitle": "This is your homepage",
+        "subtitle": "This is a list of subscription events",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },

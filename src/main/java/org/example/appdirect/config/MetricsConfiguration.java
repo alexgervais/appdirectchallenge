@@ -56,23 +56,27 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
 
     @Override
     public void setEnvironment(Environment environment) {
+
         this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_METRICS);
     }
 
     @Override
     @Bean
     public MetricRegistry getMetricRegistry() {
+
         return metricRegistry;
     }
 
     @Override
     @Bean
     public HealthCheckRegistry getHealthCheckRegistry() {
+
         return healthCheckRegistry;
     }
 
     @PostConstruct
     public void init() {
+
         log.debug("Registering JVM gauges");
         metricRegistry.register(PROP_METRIC_REG_JVM_MEMORY, new MemoryUsageGaugeSet());
         metricRegistry.register(PROP_METRIC_REG_JVM_GARBAGE, new GarbageCollectorMetricSet());
@@ -100,11 +104,13 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
 
         @Override
         public void setEnvironment(Environment environment) {
+
             this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_METRICS_GRAPHITE);
         }
 
         @PostConstruct
         private void init() {
+
             Boolean graphiteEnabled = propertyResolver.getProperty(PROP_GRAPHITE_ENABLED, Boolean.class, false);
             if (graphiteEnabled) {
                 log.info("Initializing Metrics Graphite reporting");
@@ -137,11 +143,13 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
 
         @Override
         public void setEnvironment(Environment environment) {
+
             this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_METRICS_SPARK);
         }
 
         @PostConstruct
         private void init() {
+
             Boolean sparkEnabled = propertyResolver.getProperty(PROP_SPARK_ENABLED, Boolean.class, false);
             if (sparkEnabled) {
                 log.info("Initializing Metrics Spark reporting");

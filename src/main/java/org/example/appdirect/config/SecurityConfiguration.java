@@ -25,11 +25,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+
         auth
             .userDetailsService(userDetailsService)
             .passwordEncoder(passwordEncoder());
@@ -37,11 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+
         web.ignoring()
             .antMatchers("/scripts/**/*.{js,html}")
             .antMatchers("/bower_components/**")
             .antMatchers("/i18n/**")
             .antMatchers("/assets/**")
+           // .antMatchers("/api/events/**")
+           // .antMatchers("/api/subscriptions/**")
             .antMatchers("/api/register")
             .antMatchers("/api/activate")
             .antMatchers("/test/**")
@@ -51,11 +56,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
+
         return super.authenticationManagerBean();
     }
 
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+
         return new SecurityEvaluationContextExtension();
     }
 }

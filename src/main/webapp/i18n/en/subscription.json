@@ -1,0 +1,10 @@
+{
+    "appdirectchallengeApp": {
+        "subscription" : {
+            "edition": "Edition",
+            "accountIdentifier": "Account Identifier",
+            "eventType": "Event Type",
+            "name": "Name"
+        }
+    }
+}

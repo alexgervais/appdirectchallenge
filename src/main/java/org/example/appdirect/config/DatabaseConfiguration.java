@@ -40,6 +40,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 
     @Override
     public void setEnvironment(Environment env) {
+
         this.env = env;
         this.propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
     }
@@ -48,6 +49,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
     @ConditionalOnMissingClass(name = "org.example.appdirect.config.HerokuDatabaseConfiguration")
     @Profile("!" + Constants.SPRING_PROFILE_CLOUD)
     public DataSource dataSource() {
+
         log.debug("Configuring Datasource");
         if (propertyResolver.getProperty("url") == null && propertyResolver.getProperty("databaseName") == null) {
             log.error("Your database connection pool configuration is incorrect! The application" +
@@ -75,6 +77,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 
     @Bean
     public SpringLiquibase liquibase(DataSource dataSource) {
+
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource);
         liquibase.setChangeLog("classpath:config/liquibase/master.xml");
@@ -95,6 +98,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 
     @Bean
     public Hibernate4Module hibernate4Module() {
+
         return new Hibernate4Module();
     }
 }

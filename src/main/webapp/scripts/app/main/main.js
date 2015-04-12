@@ -18,6 +18,7 @@ angular.module('appdirectchallengeApp')
                 resolve: {
                     mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
                         $translatePartialLoader.addPart('main');
+                        $translatePartialLoader.addPart('subscription');
                         return $translate.refresh();
                     }]
                 }

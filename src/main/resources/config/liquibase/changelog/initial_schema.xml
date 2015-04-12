@@ -7,15 +7,11 @@
     <property name="now" value="now()" dbms="mysql,h2"/>
     <property name="now" value="current_timestamp" dbms="postgresql"/>
 
-    <changeSet id="00000000000000" author="jhipster" dbms="postgresql">
+    <changeSet id="0" author="jhipster" dbms="postgresql">
         <createSequence sequenceName="hibernate_sequence" startValue="1000" incrementBy="1"/>
     </changeSet>
 
-    <!--
-        JHipster core tables.
-        The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
-    -->
-    <changeSet id="00000000000001" author="jhipster">
+    <changeSet id="1" author="jhipster">
         <createTable tableName="T_USER">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -103,49 +99,8 @@
                   file="config/liquibase/users_authorities.csv"
                   separator=";"
                   tableName="T_USER_AUTHORITY"/>
-
-        <createTable tableName="T_PERSISTENT_AUDIT_EVENT">
-            <column name="event_id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="principal" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="event_date" type="timestamp"/>
-            <column name="event_type" type="varchar(255)"/>
-        </createTable>
-
-        <createTable tableName="T_PERSISTENT_AUDIT_EVENT_DATA">
-            <column name="event_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="value" type="varchar(255)"/>
-        </createTable>
-        <addPrimaryKey columnNames="event_id, name" tableName="T_PERSISTENT_AUDIT_EVENT_DATA"/>
-
-        <createIndex indexName="idx_persistent_audit_event"
-                     tableName="T_PERSISTENT_AUDIT_EVENT"
-                     unique="false">
-            <column name="principal" type="varchar(255)"/>
-            <column name="event_date" type="timestamp"/>
-        </createIndex>
-
-        <createIndex indexName="idx_persistent_audit_event_data"
-                     tableName="T_PERSISTENT_AUDIT_EVENT_DATA"
-                     unique="false">
-            <column name="event_id" type="bigint"/>
-        </createIndex>
-
-        <addForeignKeyConstraint baseColumnNames="event_id"
-                                 baseTableName="T_PERSISTENT_AUDIT_EVENT_DATA"
-                                 constraintName="FK_event_persistent_audit_event_data"
-                                 referencedColumnNames="event_id"
-                                 referencedTableName="T_PERSISTENT_AUDIT_EVENT"/>
     </changeSet>
-    
+
     <!-- Manage the OAuth authentication -->
     <changeSet id="2" author="jhipster">
         <createTable tableName="oauth_client_details">

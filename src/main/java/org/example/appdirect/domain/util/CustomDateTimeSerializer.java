@@ -22,6 +22,7 @@ public class CustomDateTimeSerializer extends JsonSerializer<DateTime> {
     public void serialize(DateTime value, JsonGenerator generator,
                           SerializerProvider serializerProvider)
         throws IOException {
+
         generator.writeString(formatter.print(value.toDateTime(DateTimeZone.UTC)));
     }
 

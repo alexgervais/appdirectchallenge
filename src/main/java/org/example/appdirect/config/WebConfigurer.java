@@ -41,6 +41,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+
         log.info("Web application configuration, using profiles: {}", Arrays.toString(env.getActiveProfiles()));
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
         if (!env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
@@ -62,6 +63,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      */
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
+
         MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
         // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
         mappings.add("html", "text/html;charset=utf-8");
@@ -74,6 +76,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      * Initializes the GZip filter.
      */
     private void initGzipFilter(ServletContext servletContext, EnumSet<DispatcherType> disps) {
+
         log.debug("Registering GZip Filter");
         FilterRegistration.Dynamic compressingFilter = servletContext.addFilter("gzipFilter", new GZipServletFilter());
         Map<String, String> parameters = new HashMap<>();
@@ -112,6 +115,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      */
     private void initCachingHttpHeadersFilter(ServletContext servletContext,
                                               EnumSet<DispatcherType> disps) {
+
         log.debug("Registering Caching HTTP Headers Filter");
         FilterRegistration.Dynamic cachingHttpHeadersFilter =
             servletContext.addFilter("cachingHttpHeadersFilter",
@@ -126,6 +130,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      * Initializes Metrics.
      */
     private void initMetrics(ServletContext servletContext, EnumSet<DispatcherType> disps) {
+
         log.debug("Initializing Metrics registries");
         servletContext.setAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE,
             metricRegistry);
@@ -152,6 +157,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      * Initializes H2 console
      */
     private void initH2Console(ServletContext servletContext) {
+
         log.debug("Initialize H2 console");
         ServletRegistration.Dynamic h2ConsoleServlet = servletContext.addServlet("H2Console", new org.h2.server.web.WebServlet());
         h2ConsoleServlet.addMapping("/console/*");

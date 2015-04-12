@@ -37,6 +37,7 @@ public class UserResourceTest {
 
     @Before
     public void setup() {
+
         UserResource userResource = new UserResource();
         ReflectionTestUtils.setField(userResource, "userRepository", userRepository);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource).build();
@@ -44,6 +45,7 @@ public class UserResourceTest {
 
     @Test
     public void testGetExistingUser() throws Exception {
+
         restUserMockMvc.perform(get("/api/users/admin")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -53,6 +55,7 @@ public class UserResourceTest {
 
     @Test
     public void testGetUnknownUser() throws Exception {
+
         restUserMockMvc.perform(get("/api/users/unknown")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());

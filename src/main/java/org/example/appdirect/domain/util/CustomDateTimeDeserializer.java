@@ -17,6 +17,7 @@ public class CustomDateTimeDeserializer extends JsonDeserializer<DateTime> {
     @Override
     public DateTime deserialize(JsonParser jp, DeserializationContext ctxt)
         throws IOException {
+
         JsonToken t = jp.getCurrentToken();
         if (t == JsonToken.VALUE_STRING) {
             String str = jp.getText().trim();

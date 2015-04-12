@@ -40,6 +40,7 @@ public class OAuth2ServerConfiguration {
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
+
             http
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
@@ -82,6 +83,7 @@ public class OAuth2ServerConfiguration {
 
         @Bean
         public TokenStore tokenStore() {
+
             return new JdbcTokenStore(dataSource);
         }
 
@@ -90,8 +92,7 @@ public class OAuth2ServerConfiguration {
         private AuthenticationManager authenticationManager;
 
         @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints)
-            throws Exception {
+        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
             endpoints
                 .tokenStore(tokenStore())
@@ -100,6 +101,7 @@ public class OAuth2ServerConfiguration {
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
             clients
                 .inMemory()
                 .withClient(propertyResolver.getProperty(PROP_CLIENTID))
@@ -112,6 +114,7 @@ public class OAuth2ServerConfiguration {
 
         @Override
         public void setEnvironment(Environment environment) {
+
             this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_OAUTH);
         }
     }

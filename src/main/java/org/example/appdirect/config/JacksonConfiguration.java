@@ -14,6 +14,7 @@ public class JacksonConfiguration {
 
     @Bean
     public JodaModule jacksonJodaModule() {
+
         JodaModule module = new JodaModule();
         DateTimeFormatterFactory formatterFactory = new DateTimeFormatterFactory();
         formatterFactory.setIso(DateTimeFormat.ISO.DATE);

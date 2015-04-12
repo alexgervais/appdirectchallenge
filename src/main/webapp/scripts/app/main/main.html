@@ -4,6 +4,41 @@
             <h1 translate="main.title">Welcome, Java Hipster!</h1>
             <p class="lead" translate="main.subtitle">This is your homepage</p>
 
+            <div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th translate="appdirectchallengeApp.subscription.eventType">Event Type</th>
+                            <th translate="appdirectchallengeApp.subscription.accountIdentifier">Account Identifier</th>
+                            <th translate="appdirectchallengeApp.subscription.edition">Edition</th>
+                            <th translate="appdirectchallengeApp.subscription.name">Name</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="subscription in subscriptions">
+                            <td>{{subscription.id}}</td>
+                            <td>{{subscription.eventType}}</td>
+                            <td>{{subscription.accountIdentifier}}</td>
+                            <td>{{subscription.edition}}</td>
+                            <td>{{subscription.name}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pager">
+                            <li ng-show="links['first']" ng-click="loadPage(links['first'])"><a href="#">&lt;&lt;</a></li>
+                            <li ng-show="links['prev']" ng-click="loadPage(links['prev'])"><a href="#">&lt;</a></li>
+                            <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a href="#">&gt;</a></li>
+                            <li ng-show="links['last']" ng-click="loadPage(links['last'])"><a href="#">&gt;&gt;</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <hr/>
 
             <div ng-switch="isAuthenticated()">
                 <div class="alert alert-success" ng-switch-when="true"

@@ -97,6 +97,7 @@ public final class GZipResponseUtil {
      *                                                   method and the set header is ignored.
      */
     public static void addGzipHeader(HttpServletResponse response) throws GzipResponseHeadersNotModifiableException {
+
         response.setHeader("Content-Encoding", "gzip");
         boolean containsEncoding = response.containsHeader("Content-Encoding");
         if (!containsEncoding) {
