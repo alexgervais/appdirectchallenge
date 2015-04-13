@@ -1,8 +1,11 @@
 package org.example.appdirect.web.mapper;
 
 import org.example.appdirect.domain.Subscription;
+import org.example.appdirect.service.dto.CreatorDTO;
 import org.example.appdirect.service.dto.EventDTO;
 import org.springframework.stereotype.Service;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Service
 public class SubscriptionMapper {
@@ -21,8 +24,16 @@ public class SubscriptionMapper {
             subscription.setEdition(eventDTO.getPayload().getOrder().getEditionCode());
         }
 
-        if (eventDTO.getCreator() != null) {
-            subscription.setName(String.format("%s %s", eventDTO.getCreator().getFirstName(), eventDTO.getCreator().getLastName()));
+        final CreatorDTO creator = eventDTO.getCreator();
+        if (creator != null) {
+            final StringBuilder stringBuilder = new StringBuilder();
+            if (!isEmpty(creator.getFirstName())) {
+                stringBuilder.append(creator.getFirstName()).append(" ");
+            }
+            if (!isEmpty(creator.getLastName())) {
+                stringBuilder.append(creator.getLastName());
+            }
+            subscription.setName(stringBuilder.toString().trim());
         }
 
         return subscription;

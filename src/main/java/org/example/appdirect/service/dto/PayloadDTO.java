@@ -8,7 +8,6 @@ public class PayloadDTO {
     private CompanyDTO company;
     private Map<String, String> configuration;
     private OrderDTO order;
-    private CreatorDTO creator;
 
     public AccountDTO getAccount() {
 
@@ -48,15 +47,5 @@ public class PayloadDTO {
     public void setOrder(final OrderDTO order) {
 
         this.order = order;
-    }
-
-    public CreatorDTO getCreator() {
-
-        return creator;
-    }
-
-    public void setCreator(final CreatorDTO creator) {
-
-        this.creator = creator;
     }
 }

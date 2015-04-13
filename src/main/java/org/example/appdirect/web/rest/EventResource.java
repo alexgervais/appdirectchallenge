@@ -39,7 +39,7 @@ public class EventResource {
     private AppDirectEventAPIClient appDirectEventAPIClient;
 
     /**
-     * GET  /create?url={eventUrl} -> handle the subscription order event located at "eventUrl".
+     * GET  /create?url={eventUrl} -> handle the subscription order event located at "url".
      */
     @RequestMapping(value = "/create", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
     @Timed
@@ -61,7 +61,7 @@ public class EventResource {
     }
 
     /**
-     * GET  /update?url={eventUrl} -> handle the subscription change and cancel event located at "eventUrl".
+     * GET  /update?url={eventUrl} -> handle the subscription change and cancel event located at "url".
      */
     @RequestMapping(value = "/update", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
     @Timed

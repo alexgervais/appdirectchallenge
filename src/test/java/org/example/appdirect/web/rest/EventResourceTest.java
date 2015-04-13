@@ -5,10 +5,7 @@ import org.example.appdirect.domain.Subscription;
 import org.example.appdirect.repository.SubscriptionRepository;
 import org.example.appdirect.service.AppDirectAPIException;
 import org.example.appdirect.service.AppDirectEventAPIClient;
-import org.example.appdirect.service.dto.CreatorDTO;
 import org.example.appdirect.service.dto.EventDTO;
-import org.example.appdirect.service.dto.OrderDTO;
-import org.example.appdirect.service.dto.PayloadDTO;
 import org.example.appdirect.web.mapper.SubscriptionMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import static org.example.appdirect.web.rest.builder.EventDTOBuilder.anEvent;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.verify;
@@ -76,29 +74,19 @@ public class EventResourceTest {
     @Transactional
     public void createSubscriptionEvent() throws Exception {
 
-        final ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor.forClass(Subscription.class);
+        final EventDTO event = anEvent().withType("CREATION_EVENT")
+            .withEdition("LIMITED")
+            .withFirstName("Alex")
+            .withLastName("Gervais")
+            .build();
 
-        final EventDTO event = new EventDTO();
-        event.setType("CREATION_EVENT");
-        final PayloadDTO payload = new PayloadDTO();
-        final OrderDTO order = new OrderDTO();
-        order.setEditionCode("LIMITED");
-        payload.setOrder(order);
-        final CreatorDTO creator = new CreatorDTO();
-        creator.setFirstName("Alex");
-        creator.setLastName("Gervais");
-        payload.setCreator(creator);
-        event.setPayload(payload);
-
-        verify(subscriptionRepository).save(subscriptionArgumentCaptor.capture());
         when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenReturn(event);
 
-        // Get all the subscriptions
         final ResultActions request = restEventMockMvc.perform(get("/api/events/create?url=http://www.google.ca"));
 
-        request
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_XML));
+        final ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor.forClass(Subscription.class);
+        verify(subscriptionRepository).save(subscriptionArgumentCaptor.capture());
+
 
         final Subscription subscription = subscriptionArgumentCaptor.getValue();
 
@@ -106,10 +94,13 @@ public class EventResourceTest {
         assertThat(subscription.getName(), is(equalTo("Alex Gervais")));
         assertThat(subscription.getEventType(), is(equalTo("CREATION_EVENT")));
 
-        request.andExpect(content().string(startsWith("<result xmlns=\"\">" +
-            "<success>true</success>" +
-            "<accountIdentifier>" + subscription.getAccountIdentifier() + "</accountIdentifier" +
-            "</result>")));
+        request
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_XML))
+            .andExpect(content().string(startsWith("<result xmlns=\"\">" +
+                "<success>true</success>" +
+                "<accountIdentifier>" + subscription.getAccountIdentifier() + "</accountIdentifier>" +
+                "</result>")));
     }
 
     @Test
@@ -118,8 +109,55 @@ public class EventResourceTest {
 
         when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenThrow(new AppDirectAPIException("url", null));
 
-        // Get all the subscriptions
         restEventMockMvc.perform(get("/api/events/create?url=http://www.google.ca"))
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().contentType(MediaType.APPLICATION_XML))
+            .andExpect(content().string("<result xmlns=\"\">" +
+                "<success>false</success>" +
+                "<errorCode>UNKNOWN_ERROR</errorCode>" +
+                "<message>An error occurred while requesting event url [url]</message>" +
+                "</result>"));
+    }
+
+
+    @Test
+    @Transactional
+    public void updateSubscriptionEvent() throws Exception {
+
+        final EventDTO event = anEvent().withType("UPDATE_EVENT")
+            .withFirstName("Alex")
+            .withAccountIdentifier("ABCD")
+            .build();
+
+        when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenReturn(event);
+
+        final ResultActions request = restEventMockMvc.perform(get("/api/events/update?url=http://www.google.ca"));
+
+        final ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor.forClass(Subscription.class);
+        verify(subscriptionRepository).save(subscriptionArgumentCaptor.capture());
+
+        final Subscription subscription = subscriptionArgumentCaptor.getValue();
+
+        assertThat(subscription.getEdition(), is(nullValue()));
+        assertThat(subscription.getName(), is(equalTo("Alex")));
+        assertThat(subscription.getEventType(), is(equalTo("UPDATE_EVENT")));
+        assertThat(subscription.getAccountIdentifier(), is(equalTo("ABCD")));
+
+        request
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_XML))
+            .andExpect(content().string(startsWith("<result xmlns=\"\">" +
+                "<success>true</success>" +
+                "</result>")));
+    }
+
+    @Test
+    @Transactional
+    public void updateSubscriptionEvent_errorHandling() throws Exception {
+
+        when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenThrow(new AppDirectAPIException("url", null));
+
+        restEventMockMvc.perform(get("/api/events/update?url=http://www.google.ca"))
             .andExpect(status().is5xxServerError())
             .andExpect(content().contentType(MediaType.APPLICATION_XML))
             .andExpect(content().string("<result xmlns=\"\">" +
