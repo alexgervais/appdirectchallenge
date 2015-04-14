@@ -1,15 +1,14 @@
 # appdirectchallenge
-==========================
 
-The 'appdirectchallenge' application is a simple prototype demonstrating the integration of various AppDirect API.
-The application stack was generated with JHipster [https://jhipster.github.io/]
+The 'appdirectchallenge' application is a simple prototype demonstrating the integration of various AppDirect APIs.
+The application stack was generated with JHipster https://jhipster.github.io/
 
 ## Requirements
 
-nodejs (with npm)
-bower
-grunt
-maven
+- nodejs (with npm)
+- bower
+- grunt
+- maven
 
 ## Package
 
@@ -26,7 +25,7 @@ The .war file contains an embedded tomcat. The application can be started as eas
 
 ## Deployed to Heroku
 
-This demo application is currently deployed on Heroku. Check it out @ [https://appdirectchallenge.herokuapp.com]
+This demo application is currently deployed on Heroku. Check it out @ https://appdirectchallenge.herokuapp.com
 
 ## Supported APIs
 
@@ -38,7 +37,13 @@ This demo application is currently deployed on Heroku. Check it out @ [https://a
 https://appdirectchallenge.herokuapp.com/api/events/create?url={eventUrl}
 ```
 
-#### Change and Cancel Notification URL
+#### Change Notification URL
+
+```
+https://appdirectchallenge.herokuapp.com/api/events/update?url={eventUrl}
+```
+
+#### Cancel Notification URL
 
 ```
 https://appdirectchallenge.herokuapp.com/api/events/update?url={eventUrl}
