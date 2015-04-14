@@ -1,6 +1,9 @@
 # appdirectchallenge
 ==========================
 
+The 'appdirectchallenge' application is a simple prototype demonstrating the integration of various AppDirect API.
+The application stack was generated with JHipster [https://jhipster.github.io/]
+
 ## Requirements
 
 nodejs (with npm)
@@ -19,12 +22,30 @@ bower install
 mvn -Pprod package
 ```
 
-## Deploy to heroku
+The .war file contains an embedded tomcat. The application can be started as easily as ```java -jar target/appdirectchallenge-0.0.1-SNAPSHOT.war```
 
-To deploy to heroku, run the following commands:
+## Deployed to Heroku
 
-```bash
-grunt deployHeroku
-cd deploy/heroku
-git push
+This demo application is currently deployed on Heroku. Check it out @ [https://appdirectchallenge.herokuapp.com]
+
+## Supported APIs
+
+### Subscription API
+
+#### Create Notification URL
+
+```
+https://appdirectchallenge.herokuapp.com/api/events/create?url={eventUrl}
+```
+
+#### Change and Cancel Notification URL
+
+```
+https://appdirectchallenge.herokuapp.com/api/events/update?url={eventUrl}
+```
+
+### SSO: OpenID
+
+```
+https://appdirectchallenge.herokuapp.com/api/login
 ```
