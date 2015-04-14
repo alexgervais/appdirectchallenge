@@ -37,6 +37,14 @@
                     </nav>
                 </div>
             </div>
+
+            <hr/>
+
+            <div ng-switch="isAuthenticated()">
+                <div class="alert alert-success" ng-switch-when="true"
+                     translate="main.logged.message" translate-values="{username: '{{account.login}}'}">
+                </div>
+            </div>
         </div>
     </div>
 </div>

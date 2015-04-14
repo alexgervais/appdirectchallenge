@@ -17,7 +17,7 @@
                         <span translate="global.menu.home">Home</span>
                     </a>
                 </li>
-                <li ng-class="{active: $state.includes('admin')}"  ng-switch-when="true" has-role="ROLE_ADMIN" class="dropdown pointer">
+                <li ng-class="{active: $state.includes('admin')}"  ng-switch-when="true" class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="">
                                 <span>
                                     <span class="glyphicon glyphicon-tower"></span>
@@ -34,7 +34,7 @@
                             &#xA0;<span translate="global.menu.admin.database">Database</span></a></li>
                     </ul>
                 </li>
-                <li ng-class="{active: $state.includes('account')}" class="dropdown pointer">
+                <li ng-class="{active: $state.includes('account')}" class="dropdown pointer" ng-switch-when="true">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="">
                                 <span>
                                     <span class="glyphicon glyphicon-user"></span>
@@ -47,8 +47,6 @@
                     <ul class="dropdown-menu">
                         <li ui-sref-active="active" ng-switch-when="true"><a href="" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>
                             &#xA0;<span translate="global.menu.account.logout">Log out</span></a></li>
-                        <li ui-sref-active="active" ng-switch-when="false"><a ui-sref="login"><span class="glyphicon glyphicon-log-in"></span>
-                            &#xA0;<span translate="global.menu.account.login">Authenticate</span></a></li>
                     </ul>
                 </li>
                 <li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">
