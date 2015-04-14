@@ -1,6 +1,7 @@
 package org.example.appdirect.config;
 
 import com.google.common.collect.ImmutableMap;
+import org.example.appdirect.security.AjaxLogoutSuccessHandler;
 import org.example.appdirect.security.UserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,9 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
+    private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
+
+    @Inject
     private UserDetailsService userDetailsService;
 
     @Inject
@@ -50,14 +54,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
 
+        http
+            .logout()
+            .logoutUrl("/api/logout")
+            .logoutSuccessHandler(ajaxLogoutSuccessHandler);
+
         http.csrf().disable();
 
-        http.authorizeRequests().antMatchers("/api/events/**").permitAll().anyRequest().authenticated();
-        http.authorizeRequests().antMatchers("/**").permitAll().anyRequest().anonymous()
+        http.authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated()
             .and()
             .openidLogin()
             .authenticationUserDetailsService(userDetailsService)
             .loginProcessingUrl("/api/login")
+            .permitAll()
             .defaultSuccessUrl("/");
 
         http.addFilterBefore(oAuthProviderProcessingFilter(), OpenIDAuthenticationFilter.class);

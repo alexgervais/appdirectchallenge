@@ -1,7 +1,10 @@
 package org.example.appdirect.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AbstractAuthenticationTargetUrlRequestHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -18,17 +21,23 @@ import java.io.IOException;
 @Component
 public class AjaxLogoutSuccessHandler extends AbstractAuthenticationTargetUrlRequestHandler implements LogoutSuccessHandler {
 
-    @Inject
-    private Environment env;
+    private final Logger log = LoggerFactory.getLogger(AjaxLogoutSuccessHandler.class);
 
     @Inject
-    private SecurityUtils securityUtils;
+    private Environment env;
 
     @Override
     public void onLogoutSuccess(final HttpServletRequest request,
                                 final HttpServletResponse response,
                                 final Authentication authentication) throws IOException, ServletException {
 
-        response.sendRedirect(env.getProperty("authentication.logout.url", String.class) + securityUtils.getCurrentAuthentication().getPrincipal());
+        final String logoutUrl = env.getProperty("authentication.logout.url", String.class);
+        final String openId = ((User) authentication.getPrincipal()).getUsername();
+
+        final String fullLogoutUrl = logoutUrl + openId;
+
+        log.debug(String.format("Redirecting to [%s]", fullLogoutUrl));
+
+        response.sendRedirect(fullLogoutUrl);
     }
 }
