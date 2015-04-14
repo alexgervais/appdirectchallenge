@@ -1,52 +1,50 @@
 package org.example.appdirect.security;
 
-import org.example.appdirect.domain.Authority;
-import org.example.appdirect.domain.User;
-import org.example.appdirect.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Authenticate a user from the database.
  */
 @Component("userDetailsService")
-public class
-    UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
-
-    private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService, AuthenticationUserDetailsService {
 
     @Inject
-    private UserRepository userRepository;
+    private SecurityUtils securityUtils;
 
     @Override
-    @Transactional
-    public UserDetails loadUserByUsername(final String login) {
+    public UserDetails loadUserByUsername(final String openId) throws UsernameNotFoundException, DataAccessException {
 
-        log.debug("Authenticating {}", login);
-        String lowercaseLogin = login.toLowerCase();
-        User userFromDatabase = userRepository.findOneByLogin(lowercaseLogin);
-        if (userFromDatabase == null) {
-            throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database");
-        } else if (!userFromDatabase.getActivated()) {
-            throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
+        final GrantedAuthority userRole = new SimpleGrantedAuthority(AuthoritiesConstants.USER);
+
+        return new User(openId, "", Collections.singletonList(userRole));
+    }
+
+    @Override
+    public UserDetails loadUserDetails(final Authentication authentication) throws UsernameNotFoundException {
+
+        return loadUserByUsername((String) authentication.getPrincipal());
+    }
+
+    public UserDetails getCurrentUserDetails() {
+
+        final Authentication authentication = securityUtils.getCurrentAuthentication();
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof UserDetails) {
+                return (UserDetails) authentication.getPrincipal();
+            }
         }
 
-        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Authority authority : userFromDatabase.getAuthorities()) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority.getName());
-            grantedAuthorities.add(grantedAuthority);
-        }
-        return new org.springframework.security.core.userdetails.User(lowercaseLogin,
-            userFromDatabase.getPassword(), grantedAuthorities);
+        return null;
     }
 }

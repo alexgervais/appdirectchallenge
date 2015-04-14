@@ -21,5 +21,5 @@ authentication:
     oauth:
         clientid: test-product-1-20918
         secret: NGVTes1Q3t9tArSg
-        # Token is valid 30 minutes
-        tokenValidityInSeconds: 1800
+    logout:
+        url: https://www.appdirect.com/applogout?openid=

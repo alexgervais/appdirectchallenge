@@ -48,7 +48,8 @@
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.3</sonar-maven-plugin.version>
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
-        <spring-security-oauth2.version>2.0.1.RELEASE</spring-security-oauth2.version>
+        <spring-security-oauth.version>2.0.1.RELEASE</spring-security-oauth.version>
+        <spring-security-openid.version>3.2.7.RELEASE</spring-security-openid.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
         <guava.version>18.0</guava.version>
         <signpost-core.version>1.2</signpost-core.version>
@@ -317,11 +318,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>${spring-security-oauth2.version}</version>
-        </dependency>
         <!-- Spring Cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -345,6 +341,16 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-messaging</artifactId>
             <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth</artifactId>
+            <version>${spring-security-oauth.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-openid</artifactId>
+            <version>${spring-security-openid.version}</version>
         </dependency>
         <!-- reporting -->
         <dependency>
