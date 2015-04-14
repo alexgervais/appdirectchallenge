@@ -52,5 +52,5 @@ https://appdirectchallenge.herokuapp.com/api/events/update?url={eventUrl}
 ### SSO: OpenID
 
 ```
-https://appdirectchallenge.herokuapp.com/api/login
+https://appdirectchallenge.herokuapp.com/api/login?openid_identifier={openid}
 ```

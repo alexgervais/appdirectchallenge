@@ -44,8 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/scripts/**/*.{js,html}")
             .antMatchers("/bower_components/**")
             .antMatchers("/i18n/**")
-            .antMatchers("/assets/**")
-            .antMatchers("/login");
+            .antMatchers("/assets/**");
     }
 
     @Override
@@ -58,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
             .openidLogin()
             .authenticationUserDetailsService(userDetailsService)
-            .loginProcessingUrl("/login")
+            .loginProcessingUrl("/api/login")
             .defaultSuccessUrl("/");
 
         http.addFilterBefore(oAuthProviderProcessingFilter(), OpenIDAuthenticationFilter.class);
