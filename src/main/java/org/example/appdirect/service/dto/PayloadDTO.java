@@ -6,6 +6,7 @@ public class PayloadDTO {
 
     private AccountDTO account;
     private CompanyDTO company;
+    private UserDTO user;
     private Map<String, String> configuration;
     private OrderDTO order;
 
@@ -27,6 +28,16 @@ public class PayloadDTO {
     public void setCompany(final CompanyDTO company) {
 
         this.company = company;
+    }
+
+    public UserDTO getUser() {
+
+        return user;
+    }
+
+    public void setUser(final UserDTO user) {
+
+        this.user = user;
     }
 
     public Map<String, String> getConfiguration() {

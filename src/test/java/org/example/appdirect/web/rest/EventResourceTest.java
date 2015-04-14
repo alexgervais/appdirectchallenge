@@ -1,11 +1,14 @@
 package org.example.appdirect.web.rest;
 
 import org.example.appdirect.Application;
+import org.example.appdirect.domain.Access;
 import org.example.appdirect.domain.Subscription;
+import org.example.appdirect.repository.AccessRepository;
 import org.example.appdirect.repository.SubscriptionRepository;
 import org.example.appdirect.service.AppDirectAPIException;
 import org.example.appdirect.service.AppDirectEventAPIClient;
 import org.example.appdirect.service.dto.EventDTO;
+import org.example.appdirect.web.mapper.AccessMapper;
 import org.example.appdirect.web.mapper.SubscriptionMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,8 +52,14 @@ public class EventResourceTest {
     @Inject
     private SubscriptionMapper subscriptionMapper;
 
+    @Inject
+    private AccessMapper accessMapper;
+
     @Mock
     private SubscriptionRepository subscriptionRepository;
+
+    @Mock
+    private AccessRepository accessRepository;
 
     @Mock
     private AppDirectEventAPIClient appDirectEventAPIClient;
@@ -64,7 +73,9 @@ public class EventResourceTest {
 
         final EventResource eventResource = new EventResource();
         ReflectionTestUtils.setField(eventResource, "subscriptionRepository", subscriptionRepository);
+        ReflectionTestUtils.setField(eventResource, "accessRepository", accessRepository);
         ReflectionTestUtils.setField(eventResource, "subscriptionMapper", subscriptionMapper);
+        ReflectionTestUtils.setField(eventResource, "accessMapper", accessMapper);
         ReflectionTestUtils.setField(eventResource, "appDirectEventAPIClient", appDirectEventAPIClient);
 
         this.restEventMockMvc = MockMvcBuilders.standaloneSetup(eventResource).build();
@@ -76,8 +87,8 @@ public class EventResourceTest {
 
         final EventDTO event = anEvent().withType("CREATION_EVENT")
             .withEdition("LIMITED")
-            .withFirstName("Alex")
-            .withLastName("Gervais")
+            .withCreatorFirstName("Alex")
+            .withCreatorLastName("Gervais")
             .build();
 
         when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenReturn(event);
@@ -119,13 +130,12 @@ public class EventResourceTest {
                 "</result>"));
     }
 
-
     @Test
     @Transactional
     public void updateSubscriptionEvent() throws Exception {
 
         final EventDTO event = anEvent().withType("UPDATE_EVENT")
-            .withFirstName("Alex")
+            .withCreatorFirstName("Alex")
             .withAccountIdentifier("ABCD")
             .build();
 
@@ -158,6 +168,107 @@ public class EventResourceTest {
         when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenThrow(new AppDirectAPIException("url", null));
 
         restEventMockMvc.perform(get("/api/events/update?url=http://www.google.ca"))
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().contentType(MediaType.APPLICATION_XML))
+            .andExpect(content().string("<result xmlns=\"\">" +
+                "<success>false</success>" +
+                "<errorCode>UNKNOWN_ERROR</errorCode>" +
+                "<message>An error occurred while requesting event url [url]</message>" +
+                "</result>"));
+    }
+
+    @Test
+    @Transactional
+    public void assignEvent() throws Exception {
+
+        final EventDTO event = anEvent().withType("USER_ASSIGNMENT")
+            .withUserFirstName("Alex")
+            .withUserLastName("Gervais")
+            .withUserEmail("alex.gervais@gmail.com")
+            .withUserOpenId("123456789")
+            .withAccountIdentifier("ABCD")
+            .build();
+
+        when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenReturn(event);
+
+        final ResultActions request = restEventMockMvc.perform(get("/api/events/assign?url=http://www.google.ca"));
+
+        final ArgumentCaptor<Access> accessArgumentCaptor = ArgumentCaptor.forClass(Access.class);
+        verify(accessRepository).save(accessArgumentCaptor.capture());
+
+        final Access access = accessArgumentCaptor.getValue();
+
+        assertThat(access.getName(), is(equalTo("Alex Gervais")));
+        assertThat(access.getEmail(), is(equalTo("alex.gervais@gmail.com")));
+        assertThat(access.getOpenId(), is(equalTo("123456789")));
+        assertThat(access.getEventType(), is(equalTo("USER_ASSIGNMENT")));
+        assertThat(access.getAccountIdentifier(), is(equalTo("ABCD")));
+
+        request
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_XML))
+            .andExpect(content().string(startsWith("<result xmlns=\"\">" +
+                "<success>true</success>" +
+                "</result>")));
+    }
+
+    @Test
+    @Transactional
+    public void assignEvent_errorHandling() throws Exception {
+
+        when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenThrow(new AppDirectAPIException("url", null));
+
+        restEventMockMvc.perform(get("/api/events/assign?url=http://www.google.ca"))
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().contentType(MediaType.APPLICATION_XML))
+            .andExpect(content().string("<result xmlns=\"\">" +
+                "<success>false</success>" +
+                "<errorCode>UNKNOWN_ERROR</errorCode>" +
+                "<message>An error occurred while requesting event url [url]</message>" +
+                "</result>"));
+    }
+
+    @Test
+    @Transactional
+    public void unassignEvent() throws Exception {
+
+        final EventDTO event = anEvent().withType("USER_UNASSIGNMENT")
+            .withUserFirstName("Alex")
+            .withUserEmail("alex.gervais@gmail.com")
+            .withUserOpenId("123456789")
+            .withAccountIdentifier("ABCD")
+            .build();
+
+        when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenReturn(event);
+
+        final ResultActions request = restEventMockMvc.perform(get("/api/events/unassign?url=http://www.google.ca"));
+
+        final ArgumentCaptor<Access> accessArgumentCaptor = ArgumentCaptor.forClass(Access.class);
+        verify(accessRepository).save(accessArgumentCaptor.capture());
+
+        final Access access = accessArgumentCaptor.getValue();
+
+        assertThat(access.getName(), is(equalTo("Alex")));
+        assertThat(access.getEmail(), is(equalTo("alex.gervais@gmail.com")));
+        assertThat(access.getOpenId(), is(equalTo("123456789")));
+        assertThat(access.getEventType(), is(equalTo("USER_UNASSIGNMENT")));
+        assertThat(access.getAccountIdentifier(), is(equalTo("ABCD")));
+
+        request
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_XML))
+            .andExpect(content().string(startsWith("<result xmlns=\"\">" +
+                "<success>true</success>" +
+                "</result>")));
+    }
+
+    @Test
+    @Transactional
+    public void unassignEvent_errorHandling() throws Exception {
+
+        when(appDirectEventAPIClient.getSubscriptionEvent("http://www.google.ca")).thenThrow(new AppDirectAPIException("url", null));
+
+        restEventMockMvc.perform(get("/api/events/unassign?url=http://www.google.ca"))
             .andExpect(status().is5xxServerError())
             .andExpect(content().contentType(MediaType.APPLICATION_XML))
             .andExpect(content().string("<result xmlns=\"\">" +

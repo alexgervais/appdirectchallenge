@@ -1,8 +1,8 @@
 <div ng-cloak>
     <div class="row">
         <div class="col-md-12">
-            <h1 translate="main.title">Welcome, Java Hipster!</h1>
-            <p class="lead" translate="main.subtitle">This is your homepage</p>
+            <h1 translate="main.title">Welcome,</h1>
+            <p class="lead" translate="main.subscription"></p>
 
             <div>
                 <div class="table-responsive">
@@ -29,10 +29,50 @@
                     </table>
                     <nav>
                         <ul class="pager">
-                            <li ng-show="links['first']" ng-click="loadPage(links['first'])"><a href="#">&lt;&lt;</a></li>
-                            <li ng-show="links['prev']" ng-click="loadPage(links['prev'])"><a href="#">&lt;</a></li>
-                            <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a href="#">&gt;</a></li>
-                            <li ng-show="links['last']" ng-click="loadPage(links['last'])"><a href="#">&gt;&gt;</a></li>
+                            <li ng-show="subscriptionLinks['first']" ng-click="loadSubscriptionPage(subscriptionLinks['first'])"><a href="#">&lt;&lt;</a></li>
+                            <li ng-show="subscriptionLinks['prev']" ng-click="loadSubscriptionPage(subscriptionLinks['prev'])"><a href="#">&lt;</a></li>
+                            <li ng-show="subscriptionLinks['next']" ng-click="loadSubscriptionPage(subscriptionLinks['next'])"><a href="#">&gt;</a></li>
+                            <li ng-show="subscriptionLinks['last']" ng-click="loadSubscriptionPage(subscriptionLinks['last'])"><a href="#">&gt;&gt;</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <hr/>
+
+            <p class="lead" translate="main.access"></p>
+
+            <div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th translate="appdirectchallengeApp.access.eventType">Event Type</th>
+                            <th translate="appdirectchallengeApp.access.accountIdentifier">Account Identifier</th>
+                            <th translate="appdirectchallengeApp.access.name">Name</th>
+                            <th translate="appdirectchallengeApp.access.email">Email</th>
+                            <th translate="appdirectchallengeApp.access.openId">OpenId</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="access in accesses">
+                            <td>{{access.id}}</td>
+                            <td>{{access.eventType}}</td>
+                            <td>{{access.accountIdentifier}}</td>
+                            <td>{{access.name}}</td>
+                            <td>{{access.email}}</td>
+                            <td>{{access.openId}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pager">
+                            <li ng-show="accesslinks['first']" ng-click="loadAccessPage(accesslinks['first'])"><a href="#">&lt;&lt;</a></li>
+                            <li ng-show="accesslinks['prev']" ng-click="loadAccessPage(accesslinks['prev'])"><a href="#">&lt;</a></li>
+                            <li ng-show="accesslinks['next']" ng-click="loadAccessPage(accesslinks['next'])"><a href="#">&gt;</a></li>
+                            <li ng-show="accesslinks['last']" ng-click="loadAccessPage(accesslinks['last'])"><a href="#">&gt;&gt;</a></li>
                         </ul>
                     </nav>
                 </div>

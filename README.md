@@ -49,6 +49,20 @@ https://appdirectchallenge.herokuapp.com/api/events/update?url={eventUrl}
 https://appdirectchallenge.herokuapp.com/api/events/update?url={eventUrl}
 ```
 
+### Access Management API
+
+#### User Assignment URL
+
+```
+https://appdirectchallenge.herokuapp.com/api/events/assign?url={eventUrl}
+```
+
+#### User Unassignment URL
+
+```
+https://appdirectchallenge.herokuapp.com/api/events/unassign?url={eventUrl}
+```
+
 ### SSO: OpenID
 
 ```

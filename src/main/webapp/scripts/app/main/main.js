@@ -16,9 +16,10 @@ angular.module('appdirectchallengeApp')
                     }
                 },
                 resolve: {
-                    mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
+                    mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('main');
                         $translatePartialLoader.addPart('subscription');
+                        $translatePartialLoader.addPart('access');
                         return $translate.refresh();
                     }]
                 }

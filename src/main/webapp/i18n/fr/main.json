@@ -1,7 +1,8 @@
 {
     "main": {
         "title": "Bienvenue,",
-        "subtitle": "Ceci est une liste de 'subscription events'",
+        "subscription": "Ceci est une liste de 'subscription events'",
+        "access": "Ceci est une liste de 'assign/unasign events'",
         "logged": {
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
         },

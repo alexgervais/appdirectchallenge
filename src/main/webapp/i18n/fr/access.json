@@ -1,0 +1,12 @@
+{
+    "appdirectchallengeApp": {
+        "access" : {
+            "accountIdentifier": "Identificateur du compte",
+            "eventType": "Type d'événement",
+            "name": "Nom",
+            "email": "Courriel",
+            "openId": "Identifiant OpenId"
+        }
+    }
+}
+

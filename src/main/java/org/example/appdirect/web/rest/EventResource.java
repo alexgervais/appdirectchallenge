@@ -1,10 +1,13 @@
 package org.example.appdirect.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.example.appdirect.domain.Access;
 import org.example.appdirect.domain.Subscription;
+import org.example.appdirect.repository.AccessRepository;
 import org.example.appdirect.repository.SubscriptionRepository;
 import org.example.appdirect.service.AppDirectEventAPIClient;
 import org.example.appdirect.service.dto.EventDTO;
+import org.example.appdirect.web.mapper.AccessMapper;
 import org.example.appdirect.web.mapper.SubscriptionMapper;
 import org.example.appdirect.web.rest.dto.CreationResponse;
 import org.example.appdirect.web.rest.dto.ErrorResponse;
@@ -33,7 +36,13 @@ public class EventResource {
     private SubscriptionRepository subscriptionRepository;
 
     @Inject
+    private AccessRepository accessRepository;
+
+    @Inject
     private SubscriptionMapper subscriptionMapper;
+
+    @Inject
+    private AccessMapper accessMapper;
 
     @Inject
     private AppDirectEventAPIClient appDirectEventAPIClient;
@@ -45,7 +54,7 @@ public class EventResource {
     @Timed
     public ResponseEntity<Response> create(@RequestParam("url") String eventUrl) {
 
-        log.debug(String.format("REST request to create Event : [%s]", eventUrl));
+        log.debug(String.format("Request to create Event : [%s]", eventUrl));
 
         try {
             final EventDTO event = appDirectEventAPIClient.getSubscriptionEvent(eventUrl);
@@ -67,12 +76,54 @@ public class EventResource {
     @Timed
     public ResponseEntity<Response> update(@RequestParam("url") String eventUrl) {
 
-        log.debug(String.format("REST request to update Event : [%s]", eventUrl));
+        log.debug(String.format("Request to update Event : [%s]", eventUrl));
 
         try {
             final EventDTO event = appDirectEventAPIClient.getSubscriptionEvent(eventUrl);
             final Subscription subscription = subscriptionMapper.map(event);
             subscriptionRepository.save(subscription);
+
+            return updateResponse();
+
+        } catch (Exception e) {
+            return errorResponse(e);
+        }
+    }
+
+    /**
+     * GET  /assign?url={eventUrl} -> handle the user assignment event located at "url".
+     */
+    @RequestMapping(value = "/assign", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
+    @Timed
+    public ResponseEntity<Response> assign(@RequestParam("url") String eventUrl) {
+
+        log.debug(String.format("Request to assign Event : [%s]", eventUrl));
+
+        try {
+            final EventDTO event = appDirectEventAPIClient.getSubscriptionEvent(eventUrl);
+            final Access access = accessMapper.map(event);
+            accessRepository.save(access);
+
+            return updateResponse();
+
+        } catch (Exception e) {
+            return errorResponse(e);
+        }
+    }
+
+    /**
+     * GET  /unassign?url={eventUrl} -> handle the user unassignment event located at "url".
+     */
+    @RequestMapping(value = "/unassign", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
+    @Timed
+    public ResponseEntity<Response> unassign(@RequestParam("url") String eventUrl) {
+
+        log.debug(String.format("Request to unassign Event : [%s]", eventUrl));
+
+        try {
+            final EventDTO event = appDirectEventAPIClient.getSubscriptionEvent(eventUrl);
+            final Access access = accessMapper.map(event);
+            accessRepository.save(access);
 
             return updateResponse();
 

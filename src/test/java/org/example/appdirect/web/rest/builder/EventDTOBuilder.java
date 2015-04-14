@@ -6,9 +6,13 @@ public class EventDTOBuilder {
 
     private String type;
     private String edition;
-    private String firstName;
-    private String lastName;
+    private String creatorFirstName;
+    private String creatorLastName;
     private String accountIdentifier;
+    private String userFirstName;
+    private String userLastName;
+    private String userEmail;
+    private String userOpenId;
 
     private EventDTOBuilder() {
 
@@ -33,16 +37,44 @@ public class EventDTOBuilder {
         return this;
     }
 
-    public EventDTOBuilder withFirstName(final String firstName) {
+    public EventDTOBuilder withCreatorFirstName(final String creatorFirstName) {
 
-        this.firstName = firstName;
+        this.creatorFirstName = creatorFirstName;
 
         return this;
     }
 
-    public EventDTOBuilder withLastName(final String lastName) {
+    public EventDTOBuilder withCreatorLastName(final String creatorLastName) {
 
-        this.lastName = lastName;
+        this.creatorLastName = creatorLastName;
+
+        return this;
+    }
+
+    public EventDTOBuilder withUserFirstName(final String userFirstName) {
+
+        this.userFirstName = userFirstName;
+
+        return this;
+    }
+
+    public EventDTOBuilder withUserLastName(final String userLastName) {
+
+        this.userLastName = userLastName;
+
+        return this;
+    }
+
+    public EventDTOBuilder withUserEmail(final String userEmail) {
+
+        this.userEmail = userEmail;
+
+        return this;
+    }
+
+    public EventDTOBuilder withUserOpenId(final String userOpenId) {
+
+        this.userOpenId = userOpenId;
 
         return this;
     }
@@ -62,13 +94,20 @@ public class EventDTOBuilder {
         final AccountDTO account = new AccountDTO();
         account.setAccountIdentifier(accountIdentifier);
 
+        final UserDTO user = new UserDTO();
+        user.setFirstName(userFirstName);
+        user.setLastName(userLastName);
+        user.setEmail(userEmail);
+        user.setOpenId(userOpenId);
+
         final PayloadDTO payload = new PayloadDTO();
         payload.setOrder(order);
         payload.setAccount(account);
+        payload.setUser(user);
 
         final CreatorDTO creator = new CreatorDTO();
-        creator.setFirstName(firstName);
-        creator.setLastName(lastName);
+        creator.setFirstName(creatorFirstName);
+        creator.setLastName(creatorLastName);
 
         final EventDTO event = new EventDTO();
         event.setType(type);
